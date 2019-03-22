@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>03/11/2019 JS exercises</title>
+
+	<script>
+//--------------------------------------------------------------------------------------------------------------------------
+'use strict'
+	/*
+	https://www.codewars.com/kata/count-the-number-of-cubes-with-paint-on/javascript
+	Upon arriving at an interview, you are presented with a solid blue cube. The cube is then dipped in red paint, coating the entire surface of the cube. The interviewer then proceeds to cut through the cube in all three dimensions a certain number of times.
+
+	The number of times that the cube is cut in each dimension --> the argument 'cuts'.
+
+	To solve the puzzle you must create a function that returns an integer representing the total number of small cubes with at least one red side.
+	*/
+
+	//https://math.stackexchange.com/questions/1874787/puzzle-find-number-of-cubes-with-1-red-face
+	var countSquares = function(cuts){
+	  if(cuts === 0){
+	    return 1;
+	  }else{
+	    return (6 * cuts * cuts) + 2;
+	  }
+	}
+	console.log(countSquares(5));
+//--------------------------------------------------------------------------------------------------------------------------
+		/*
+		https://www.codewars.com/kata/53368a47e38700bd8300030d/train/javascript
+
+		Given: an array containing hashes of names
+
+		Return: a string formatted as a list of names separated by commas except for the last two names, which should be separated by an ampersand.
+
+		Example:
+
+		list([ {name: 'Bart'}, {name: 'Lisa'}, {name: 'Maggie'} ])
+		// returns 'Bart, Lisa & Maggie'
+
+		list([ {name: 'Bart'}, {name: 'Lisa'} ])
+		// returns 'Bart & Lisa'
+
+		list([ {name: 'Bart'} ])
+		// returns 'Bart'
+
+		list([])
+		// returns ''
+		Note: all the hashes are pre-validated and will only contain A-Z, a-z, '-' and '.'.
+		*/
+
+		//Aaron's Solution
+		function list(names){
+		//loop through names and put them into a result array. 
+		  let res = [];
+  		  for(let i = 0; i < names.length; i++){
+  		  	if(!res.includes(names[i].name)){
+  		  		res.push(names[i].name);
+  		  	}
+  		  }
+
+  		  //if input is empty, return and empty string
+  		  if(names.length === 0){
+  		  	return '';
+  		  }
+  		  
+	        //build string from res array
+	  	    return res.reduce(function(acc, val){
+			  	if(val === res[res.length - 2]){
+			  		return acc + val + " & ";
+			  	}else if(val === res[res.length - 1]){
+			  		return acc + val; 
+			  	}else{
+					return acc + val + ", ";
+			  	}
+		    }, "");
+			
+  		}
+		console.log(list([{name: 'Bart'},{name: 'Lisa'},{name: 'Maggie'}]));
+		console.log(list([{name: 'Bart'},{name: 'Lisa'},{name: 'Maggie'},{name: 'Homer'},{name: 'Marge'},{name: 'Moe'}
+			,{name: 'Flanders'},{name: 'Smithers'},{name: 'Mr. Burns'}]));
+		console.log(list([{name: 'Bart'}]));
+
+		/*
+		My thinking
+		1. loop through res array
+		2. put each index into a string
+		3. format with single quote, comma, and &
+		*/
+
+		//alternate solution
+		function list(names){
+  		return names.reduce(function(prev, current, index, array){
+		    if (index === 0){
+		      return current.name;
+		    }
+		    else if (index === array.length - 1){
+		      return prev + ' & ' + current.name;
+		    } 
+		    else {
+		      return prev + ', ' + current.name;
+		    }
+		  }, '');
+ 		}
+
+ 		//alternate solution
+ 		function list( names ){
+		  return names.reduce(function(prev, curr, i, arr){
+		    return prev + curr.name + (i < arr.length - 2 ? ', ' : i == arr.length - 2 ? ' & ' : '');
+		  }, '');
+		}
+
+		/*
+		Questions:
+		1. How does solution 2 and 3 deal with empty input?
+		*/
+//--------------------------------------------------------------------------------------------------------------------------
+
+		/*
+		https://www.codewars.com/kata/54e6533c92449cc251001667/train/javascript
+
+		Implement the function unique_in_order which takes as argument a sequence and returns a list of items without any elements with the same value next to each other and preserving the original order of elements.
+
+		For example:
+
+		uniqueInOrder('AAAABBBCCDAABBB') == ['A', 'B', 'C', 'D', 'A', 'B']
+		uniqueInOrder('ABBCcAD')         == ['A', 'B', 'C', 'c', 'A', 'D']
+		uniqueInOrder([1,2,2,3,3])       == [1,2,3]
+		*/
+
+		//Aaron's Solution
+		var uniqueInOrder=function(iterable){
+		  	let res = [];
+		  	for(let i=0; i<iterable.length; i++){
+		  		if(iterable[i] !== iterable[i+1]){
+		  			res.push(iterable[i]);
+		  		}
+		  	}
+ 			return res;
+		}
+		console.log(uniqueInOrder('AAAABBBCCDAABBB'));
+        
+		/*
+		//alternate solution
+		var uniqueInOrder=function(iterable){
+  		let str = (Array.isArray(iterable)) ? iterable : iterable.split('');
+
+  		return str.reduce(function(prev, cur, i){
+   		 if(prev[prev.length-1] !== cur) prev.push(cur);
+		    return prev;
+		  },[]);
+		}
+        console.log(uniqueInOrder('AAAABBBCCDAABBB'));
+        */
+		/*
+		My thinking:
+		1. loop through the iterable string
+		2. compare the current index to the next index
+		3. if current index does not equal the next index, push the current to the result array
+		4. if current index does equal the next index, skip and move on.
+		5. return the result array
+		*/
+//--------------------------------------------------------------------------------------------------------------------------
+			/*
+			https://www.codewars.com/kata/5375f921003bf62192000746/train/javascript
+			The word i18n is a common abbreviation of internationalization in the developer community, used instead of typing the whole word and trying to spell it correctly. Similarly, a11y is an abbreviation of accessibility.
+
+			Write a function that takes a string and turns any and all "words" (see below) within that string of length 4 or greater into an abbreviation, following these rules:
+
+			A "word" is a sequence of alphabetical characters. By this definition, any other character like a space or hyphen (eg. "elephant-ride") will split up a series of letters into two words (eg. "elephant" and "ride").
+			The abbreviated version of the word should have the first letter, then the number of removed characters, then the last letter (eg. "elephant ride" => "e6t r2e").
+
+			Example
+			abbreviate("elephant-rides are really fun!")
+			//          ^^^^^^^^*^^^^^*^^^*^^^^^^*^^^*
+			// words (^):   "elephant" "rides" "are" "really" "fun"
+			//                123456     123     1     1234     1
+			// ignore short words:               X              X
+
+			// abbreviate:    "e6t"     "r3s"  "are"  "r4y"   "fun"
+			// all non-word characters (*) remain in place
+			//                     "-"      " "    " "     " "     "!"
+			=== "e6t-r3s are r4y fun!"
+			*/
+
+			function abbreviate(str) {
+				let regex = /[^\w\s]/gi;
+				str = str.replace(regex, " ").split(" ");
+
+				for(let i=0; i<str.length; i++){
+					if(str[i].length >= 4){
+					  str[i].replace(str[i], str[i].length - 2);
+					}
+				}
+				return str;
+			}		
+			console.log(abbreviate("elephant-rides are really fun!"));
+			/*
+			My thinking:
+			1. break up words on any non letter characters
+			2. place words into an array where each word is its own index
+			3. loop through array. if current index.length >= 4 subtract 
+			*/
+
+//--------------------------------------------------------------------------------------------------------------------------
+	</script>
+</head>
+<body>
+
+</body>
+</html>
