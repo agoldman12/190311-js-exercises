@@ -139,7 +139,7 @@
 		}
 		console.log(uniqueInOrder('AAAABBBCCDAABBB'));
         
-		
+		/*
 		//alternate solution
 		var uniqueInOrder=function(iterable){
   		let str = (Array.isArray(iterable)) ? iterable : iterable.split('');
@@ -149,8 +149,8 @@
 		    return prev;
 		  },[]);
 		}
-                console.log(uniqueInOrder('AAAABBBCCDAABBB'));
-       
+        console.log(uniqueInOrder('AAAABBBCCDAABBB'));
+        */
 		/*
 		My thinking:
 		1. loop through the iterable string
@@ -188,7 +188,7 @@
 
 				for(let i=0; i<str.length; i++){
 					if(str[i].length >= 4){
-					  str[i].replace(str[i], str[i].length - 2);
+					  return str[i][0] + str[i].slice(1).replace(/.(?!$)/g, str[i].length - 2);
 					}
 				}
 				return str;
@@ -198,7 +198,7 @@
 			My thinking:
 			1. break up words on any non letter characters
 			2. place words into an array where each word is its own index
-			3. loop through array. if current index.length >= 4 subtract 
+			3. loop through array. if current index.length >= 4 slice out the middle of the array 
 			*/
 
 //--------------------------------------------------------------------------------------------------------------------------
