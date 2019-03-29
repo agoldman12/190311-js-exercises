@@ -50,7 +50,8 @@
 
 		//Aaron's Solution
 		function list(names){
-		//loop through names and put them into a result array. 
+		//loop through names and put them into a result array. **don't need this first loop. It only makes sure that there is one of 
+		//each name, and that was not a requirement. 
 		  let res = [];
   		  for(let i = 0; i < names.length; i++){
   		  	if(!res.includes(names[i].name)){
@@ -59,7 +60,7 @@
   		  }
 
   		  //if input is empty, return and empty string
-  		  if(names.length === 0){
+  		  if(names.length === 0){ // reduce handles this for me! 
   		  	return '';
   		  }
   		  
@@ -87,7 +88,7 @@
 		3. format with single quote, comma, and &
 		*/
 
-		//alternate solution
+		//alternate solution //reduce returns inital value, so if it's empty, it returns an empty array. 
 		function list(names){
   		return names.reduce(function(prev, current, index, array){
 		    if (index === 0){
@@ -103,7 +104,7 @@
  		}
 
  		//alternate solution
- 		function list( names ){
+ 		function list( names ){ // could use closure to  give access to variables in 'names' from inside the callback function instead of arr parameter
 		  return names.reduce(function(prev, curr, i, arr){
 		    return prev + curr.name + (i < arr.length - 2 ? ', ' : i == arr.length - 2 ? ' & ' : '');
 		  }, '');
@@ -144,7 +145,7 @@
 		var uniqueInOrder=function(iterable){
   		let str = (Array.isArray(iterable)) ? iterable : iterable.split('');
 
-  		return str.reduce(function(prev, cur, i){
+  		return str.reduce(function(prev, cur, i){ // i is the increment variable for the loop. same as let i = 0; in a for loop
    		 if(prev[prev.length-1] !== cur) prev.push(cur);
 		    return prev;
 		  },[]);
@@ -184,14 +185,16 @@
 
 			function abbreviate(str) {
 				let regex = /[^\w\s]/gi;
-				str = str.replace(regex, " ").split(" ");
+				let newArr = str.replace(regex, " ").split(" ");
 
-				for(let i=0; i<str.length; i++){
-					if(str[i].length >= 4){
-					  return str[i][0] + str[i].slice(1).replace(/.(?!$)/g, str[i].length - 2);
+				newArr.map(function(val){
+					if(val.length >= 4){
+						return val.slice(1).replace(/.(?!$)/g, val.length - 2);
 					}
-				}
-				return str;
+					return val;
+					
+				}).join(" ");
+
 			}		
 			console.log(abbreviate("elephant-rides are really fun!"));
 			/*
